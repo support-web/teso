@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Palmistry Gate - 手相占いで未来を拓く</title>
+  <meta name="description" content="AI手相診断とプロ占い師によるオンライン鑑定。あなたの掌に刻まれた可能性を解き明かします。">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Serif+JP:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ========================================
+       CSS Variables
+    ======================================== */
+    :root {
+      /* 背景色 */
+      --bg-primary: #0a1a16;
+      --bg-secondary: #0f241e;
+      --bg-card: rgba(255, 255, 255, 0.03);
+
+      /* アクセントカラー */
+      --accent-gold: #c9a227;
+      --accent-gold-light: #e8c547;
+      --border-gold: rgba(201, 162, 39, 0.2);
+
+      /* テキストカラー */
+      --text-primary: #ffffff;
+      --text-secondary: #b8c4c0;
+
+      /* フォント */
+      --font-logo: 'Cormorant Garamond', serif;
+      --font-heading-jp: 'Noto Serif JP', serif;
+      --font-body: 'Noto Sans JP', sans-serif;
+    }
+
+    /* ========================================
+       Reset & Base
+    ======================================== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ========================================
+       Header
+    ======================================== */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      background: rgba(10, 26, 22, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+      z-index: 1000;
+    }
+
+    .header-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      color: var(--accent-gold);
+    }
+
+    .logo-text {
+      font-family: var(--font-logo);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-link {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--text-secondary);
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-cta {
+      padding: 10px 24px;
+      border: 1px solid var(--accent-gold);
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--accent-gold);
+      transition: all 0.3s ease;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent-gold);
+      color: var(--bg-primary);
+    }
+
+    /* Mobile Menu Button */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text-primary);
+      transition: all 0.3s ease;
+    }
+
+    /* ========================================
+       Hero Section
+    ======================================== */
+    .hero {
+      min-height: 100vh;
+      min-height: 800px;
+      padding-top: 70px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* SVG Background Decoration */
+    .hero-bg-decoration {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: grid;
+      grid-template-columns: 55% 45%;
+      align-items: center;
+      gap: 40px;
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    }
+
+    .hero-content {
+      padding-right: 40px;
+    }
+
+    .hero-catchcopy {
+      font-family: var(--font-heading-jp);
+      font-size: 42px;
+      font-weight: 500;
+      line-height: 1.8;
+      letter-spacing: 0.12em;
+      color: var(--text-primary);
+      margin-bottom: 48px;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 40px;
+      border: 1px solid var(--accent-gold);
+      border-radius: 50px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--accent-gold);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .hero-cta:hover {
+      background: var(--accent-gold);
+      color: var(--bg-primary);
+    }
+
+    .hero-cta-arrow {
+      font-size: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .hero-cta:hover .hero-cta-arrow {
+      transform: translateX(4px);
+    }
+
+    .hero-image {
+      position: relative;
+    }
+
+    .hero-image img {
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+      border-radius: 20px;
+      object-fit: cover;
+    }
+
+    /* Placeholder style if no image */
+    .hero-image-placeholder {
+      width: 100%;
+      max-width: 600px;
+      aspect-ratio: 4 / 5;
+      border: 2px dashed var(--border-gold);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    /* Floating particles animation */
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.3;
+      }
+      50% {
+        transform: translateY(-20px) translateX(10px);
+        opacity: 0.8;
+      }
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--accent-gold);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    /* ========================================
+       Services Section
+    ======================================== */
+    .services {
+      padding: 80px 40px;
+      background: var(--bg-secondary);
+    }
+
+    .services-container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .service-card {
+      background: linear-gradient(180deg, rgba(201, 162, 39, 0.08) 0%, rgba(201, 162, 39, 0.02) 100%);
+      border: 1px solid rgba(201, 162, 39, 0.2);
+      border-radius: 8px;
+      padding: 40px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 3px;
+      background: var(--accent-gold);
+      transition: width 0.3s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(201, 162, 39, 0.4);
+    }
+
+    .service-card:hover::before {
+      width: 60px;
+    }
+
+    .service-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 24px;
+      color: var(--accent-gold);
+    }
+
+    .service-title {
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .service-description {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    /* ========================================
+       Features Section (追加セクション)
+    ======================================== */
+    .features {
+      padding: 100px 40px;
+      background: var(--bg-primary);
+    }
+
+    .features-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: var(--font-heading-jp);
+      font-size: 32px;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+
+    .section-subtitle {
+      font-family: var(--font-logo);
+      font-size: 14px;
+      text-align: center;
+      color: var(--accent-gold);
+      letter-spacing: 0.2em;
+      margin-bottom: 60px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 24px;
+      padding: 32px;
+      background: var(--bg-card);
+      border-radius: 12px;
+      border: 1px solid rgba(201, 162, 39, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .feature-item:hover {
+      border-color: var(--border-gold);
+    }
+
+    .feature-number {
+      font-family: var(--font-logo);
+      font-size: 48px;
+      font-weight: 600;
+      color: var(--accent-gold);
+      opacity: 0.3;
+      line-height: 1;
+    }
+
+    .feature-content h3 {
+      font-family: var(--font-body);
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .feature-content p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    /* ========================================
+       Palmist Section (占い師紹介)
+    ======================================== */
+    .palmists {
+      padding: 100px 40px;
+      background: var(--bg-secondary);
+    }
+
+    .palmists-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .palmists-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .palmist-card {
+      background: var(--bg-primary);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(201, 162, 39, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .palmist-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-gold);
+    }
+
+    .palmist-image {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, rgba(201, 162, 39, 0.1) 0%, rgba(201, 162, 39, 0.05) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .palmist-info {
+      padding: 24px;
+    }
+
+    .palmist-name {
+      font-family: var(--font-heading-jp);
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .palmist-specialty {
+      font-size: 13px;
+      color: var(--accent-gold);
+      margin-bottom: 12px;
+    }
+
+    .palmist-description {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ========================================
+       CTA Section
+    ======================================== */
+    .cta-section {
+      padding: 100px 40px;
+      background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+      text-align: center;
+    }
+
+    .cta-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .cta-title {
+      font-family: var(--font-heading-jp);
+      font-size: 28px;
+      font-weight: 500;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .cta-description {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      line-height: 1.8;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 48px;
+      background: var(--accent-gold);
+      color: var(--bg-primary);
+      border: none;
+      border-radius: 50px;
+      font-family: var(--font-body);
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background: var(--accent-gold-light);
+      transform: translateY(-2px);
+    }
+
+    /* ========================================
+       Footer
+    ======================================== */
+    .footer {
+      padding: 60px 40px 30px;
+      background: var(--bg-primary);
+      border-top: 1px solid rgba(201, 162, 39, 0.1);
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-main {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 60px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-logo-text {
+      font-family: var(--font-logo);
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .footer-tagline {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    .footer-column h4 {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: var(--text-primary);
+    }
+
+    .footer-column ul {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-column a {
+      font-size: 13px;
+      color: var(--text-secondary);
+      transition: color 0.3s ease;
+    }
+
+    .footer-column a:hover {
+      color: var(--accent-gold);
+    }
+
+    .footer-bottom {
+      padding-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copyright {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 16px;
+    }
+
+    .social-link {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(201, 162, 39, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+    }
+
+    .social-link svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ========================================
+       Responsive Design
+    ======================================== */
+
+    /* Tablet: 768px - 1199px */
+    @media (max-width: 1199px) {
+      .hero-catchcopy {
+        font-size: 32px;
+      }
+
+      .nav-menu {
+        gap: 20px;
+      }
+
+      .features-grid {
+        gap: 24px;
+      }
+
+      .palmists-grid {
+        gap: 24px;
+      }
+    }
+
+    /* Mobile: 767px以下 */
+    @media (max-width: 767px) {
+      .header-container {
+        padding: 0 20px;
+      }
+
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: rgba(10, 26, 22, 0.98);
+        flex-direction: column;
+        padding: 20px;
+        gap: 16px;
+        border-bottom: 1px solid rgba(201, 162, 39, 0.1);
+      }
+
+      .nav-menu.active {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 100px 0 60px;
+      }
+
+      .hero-container {
+        grid-template-columns: 1fr;
+        padding: 0 20px;
+        gap: 40px;
+      }
+
+      .hero-content {
+        padding-right: 0;
+        text-align: center;
+      }
+
+      .hero-catchcopy {
+        font-size: 28px;
+        margin-bottom: 32px;
+      }
+
+      .hero-image {
+        order: -1;
+      }
+
+      .hero-image img {
+        max-width: 100%;
+        margin: 0 auto;
+      }
+
+      .services {
+        padding: 60px 20px;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .service-card {
+        padding: 32px 24px;
+      }
+
+      .features {
+        padding: 60px 20px;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-item {
+        padding: 24px;
+      }
+
+      .section-title {
+        font-size: 24px;
+      }
+
+      .palmists {
+        padding: 60px 20px;
+      }
+
+      .palmists-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-section {
+        padding: 60px 20px;
+      }
+
+      .cta-title {
+        font-size: 22px;
+      }
+
+      .footer {
+        padding: 40px 20px 20px;
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .footer-links {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+    }
+
+    /* ========================================
+       Animations
+    ======================================== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    /* Gold line glow effect */
+    @keyframes lineGlow {
+      0%, 100% {
+        opacity: 0.3;
+      }
+      50% {
+        opacity: 0.8;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ========================================
+       Header
+  ======================================== -->
+  <header class="header">
+    <div class="header-container">
+      <a href="#" class="logo">
+        <svg class="logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 2C16 2 8 6 8 16C8 26 16 30 16 30C16 30 24 26 24 16C24 6 16 2 16 2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <path d="M16 8V24" stroke="currentColor" stroke-width="1" opacity="0.6"/>
+          <path d="M12 10C12 10 14 14 14 18" stroke="currentColor" stroke-width="1" opacity="0.6"/>
+          <path d="M20 10C20 10 18 14 18 18" stroke="currentColor" stroke-width="1" opacity="0.6"/>
+          <circle cx="16" cy="16" r="2" fill="currentColor" opacity="0.8"/>
+        </svg>
+        <span class="logo-text">Palmistry Gate</span>
+      </a>
+
+      <nav class="nav-menu" id="navMenu">
+        <a href="#" class="nav-link">ホーム</a>
+        <a href="#" class="nav-link">手相の鑑定</a>
+        <a href="#" class="nav-link">プロ占い師</a>
+        <a href="#" class="nav-link">HAN</a>
+        <a href="#" class="nav-link">ブログイン</a>
+        <a href="#" class="nav-cta">オンライン対面</a>
+      </nav>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="メニューを開く">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ========================================
+       Hero Section
+  ======================================== -->
+  <section class="hero">
+    <!-- SVG Background Decoration -->
+    <svg class="hero-bg-decoration" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      <!-- Gold curved lines -->
+      <path d="M-100 400 Q 300 200, 600 350 T 1200 300 T 1600 400"
+            stroke="rgba(201, 162, 39, 0.25)" stroke-width="1.5" fill="none">
+        <animate attributeName="d" dur="8s" repeatCount="indefinite"
+          values="M-100 400 Q 300 200, 600 350 T 1200 300 T 1600 400;
+                  M-100 420 Q 300 250, 600 320 T 1200 350 T 1600 380;
+                  M-100 400 Q 300 200, 600 350 T 1200 300 T 1600 400"/>
+      </path>
+      <path d="M-50 500 Q 350 300, 700 450 T 1300 380 T 1650 500"
+            stroke="rgba(201, 162, 39, 0.3)" stroke-width="2" fill="none">
+        <animate attributeName="d" dur="10s" repeatCount="indefinite"
+          values="M-50 500 Q 350 300, 700 450 T 1300 380 T 1650 500;
+                  M-50 480 Q 350 350, 700 420 T 1300 420 T 1650 480;
+                  M-50 500 Q 350 300, 700 450 T 1300 380 T 1650 500"/>
+      </path>
+      <path d="M0 600 Q 400 400, 800 550 T 1400 480 T 1700 600"
+            stroke="rgba(201, 162, 39, 0.5)" stroke-width="1" fill="none">
+        <animate attributeName="d" dur="12s" repeatCount="indefinite"
+          values="M0 600 Q 400 400, 800 550 T 1400 480 T 1700 600;
+                  M0 580 Q 400 450, 800 520 T 1400 520 T 1700 580;
+                  M0 600 Q 400 400, 800 550 T 1400 480 T 1700 600"/>
+      </path>
+
+      <!-- Light particles -->
+      <circle cx="200" cy="200" r="2" fill="rgba(201, 162, 39, 0.6)">
+        <animate attributeName="opacity" dur="3s" repeatCount="indefinite" values="0.3;0.8;0.3"/>
+      </circle>
+      <circle cx="400" cy="350" r="3" fill="rgba(201, 162, 39, 0.5)">
+        <animate attributeName="opacity" dur="4s" repeatCount="indefinite" values="0.2;0.7;0.2"/>
+      </circle>
+      <circle cx="600" cy="150" r="1.5" fill="rgba(201, 162, 39, 0.7)">
+        <animate attributeName="opacity" dur="2.5s" repeatCount="indefinite" values="0.4;0.9;0.4"/>
+      </circle>
+      <circle cx="900" cy="280" r="2.5" fill="rgba(201, 162, 39, 0.4)">
+        <animate attributeName="opacity" dur="3.5s" repeatCount="indefinite" values="0.3;0.6;0.3"/>
+      </circle>
+      <circle cx="1100" cy="450" r="2" fill="rgba(201, 162, 39, 0.5)">
+        <animate attributeName="opacity" dur="4.5s" repeatCount="indefinite" values="0.2;0.8;0.2"/>
+      </circle>
+      <circle cx="1300" cy="200" r="1.5" fill="rgba(201, 162, 39, 0.6)">
+        <animate attributeName="opacity" dur="3s" repeatCount="indefinite" values="0.4;0.7;0.4"/>
+      </circle>
+      <circle cx="150" cy="500" r="2" fill="rgba(201, 162, 39, 0.4)">
+        <animate attributeName="opacity" dur="5s" repeatCount="indefinite" values="0.3;0.6;0.3"/>
+      </circle>
+      <circle cx="750" cy="600" r="3" fill="rgba(201, 162, 39, 0.3)">
+        <animate attributeName="opacity" dur="4s" repeatCount="indefinite" values="0.2;0.5;0.2"/>
+      </circle>
+      <circle cx="1000" cy="100" r="2" fill="rgba(201, 162, 39, 0.5)">
+        <animate attributeName="opacity" dur="3.5s" repeatCount="indefinite" values="0.3;0.7;0.3"/>
+      </circle>
+      <circle cx="500" cy="700" r="1.5" fill="rgba(201, 162, 39, 0.4)">
+        <animate attributeName="opacity" dur="4.5s" repeatCount="indefinite" values="0.2;0.6;0.2"/>
+      </circle>
+    </svg>
+
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1 class="hero-catchcopy">
+          あなたの掌には、<br>
+          まだ知らない可能性が<br>
+          刻まれている。
+        </h1>
+        <a href="#" class="hero-cta">
+          無料でAI手相診断を試す
+          <span class="hero-cta-arrow">▶</span>
+        </a>
+      </div>
+
+      <div class="hero-image">
+        <img src="assets/images/tesoutop.jpg" alt="手相診断イメージ - スマートフォンで手相を撮影する女性">
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       Services Section
+  ======================================== -->
+  <section class="services">
+    <div class="services-container">
+      <div class="services-grid">
+        <!-- Card 1: AI Speed Diagnosis -->
+        <div class="service-card">
+          <svg class="service-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="18" y="8" width="28" height="48" rx="4" stroke="currentColor" stroke-width="2"/>
+            <rect x="22" y="14" width="20" height="32" rx="2" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+            <circle cx="32" cy="52" r="2" fill="currentColor"/>
+            <path d="M26 28 L30 32 L38 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M24 36 Q32 40, 40 36" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+          </svg>
+          <h3 class="service-title">AIスピード診断</h3>
+          <p class="service-description">
+            先進スピード診断できない<br>
+            手書いあなたの診断
+          </p>
+        </div>
+
+        <!-- Card 2: Pro Palmist Consultation -->
+        <div class="service-card">
+          <svg class="service-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="32" cy="20" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 52 C16 40, 24 34, 32 34 C40 34, 48 40, 48 52" stroke="currentColor" stroke-width="2" fill="none"/>
+            <circle cx="48" cy="16" r="3" fill="currentColor" opacity="0.6"/>
+            <circle cx="52" cy="24" r="2" fill="currentColor" opacity="0.4"/>
+            <circle cx="16" cy="18" r="2.5" fill="currentColor" opacity="0.5"/>
+            <circle cx="12" cy="26" r="1.5" fill="currentColor" opacity="0.3"/>
+          </svg>
+          <h3 class="service-title">プロ占い師に相談</h3>
+          <p class="service-description">
+            プロ占いの個別鑑定を<br>
+            プロ占い師に相談
+          </p>
+        </div>
+
+        <!-- Card 3: Online Face-to-Face -->
+        <div class="service-card">
+          <svg class="service-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="12" width="48" height="32" rx="3" stroke="currentColor" stroke-width="2"/>
+            <rect x="12" y="16" width="40" height="24" rx="2" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+            <circle cx="32" cy="28" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="26" y="48" width="12" height="4" fill="currentColor" opacity="0.6"/>
+            <rect x="22" y="52" width="20" height="2" fill="currentColor" opacity="0.4"/>
+            <circle cx="44" cy="20" r="2" fill="currentColor"/>
+          </svg>
+          <h3 class="service-title">オンライン対面鑑定</h3>
+          <p class="service-description">
+            あなたの心を需で<br>
+            オンラインの対面鑑定
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       Features Section
+  ======================================== -->
+  <section class="features">
+    <div class="features-container">
+      <p class="section-subtitle">WHY CHOOSE US</p>
+      <h2 class="section-title">選ばれる理由</h2>
+
+      <div class="features-grid">
+        <div class="feature-item">
+          <span class="feature-number">01</span>
+          <div class="feature-content">
+            <h3>最先端AI技術による精密診断</h3>
+            <p>独自開発のAIが手相の細部まで分析。数万件のデータに基づいた高精度な診断結果をお届けします。</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <span class="feature-number">02</span>
+          <div class="feature-content">
+            <h3>経験豊富なプロ占い師</h3>
+            <p>厳選されたプロの占い師が在籍。AI診断と組み合わせることで、より深い洞察を得られます。</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <span class="feature-number">03</span>
+          <div class="feature-content">
+            <h3>いつでもどこでも鑑定可能</h3>
+            <p>スマートフォンひとつで、24時間365日いつでも手相診断が可能。忙しい方にも最適です。</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <span class="feature-number">04</span>
+          <div class="feature-content">
+            <h3>プライバシー完全保護</h3>
+            <p>お客様の個人情報と診断結果は最高レベルのセキュリティで保護。安心してご利用いただけます。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       Palmists Section
+  ======================================== -->
+  <section class="palmists">
+    <div class="palmists-container">
+      <p class="section-subtitle">OUR PALMISTS</p>
+      <h2 class="section-title">在籍占い師</h2>
+
+      <div class="palmists-grid">
+        <div class="palmist-card">
+          <div class="palmist-image">
+            占い師画像
+          </div>
+          <div class="palmist-info">
+            <h3 class="palmist-name">月詠 (Tsukuyomi)</h3>
+            <p class="palmist-specialty">恋愛・結婚運 専門</p>
+            <p class="palmist-description">20年以上の鑑定歴を持つベテラン占い師。優しく寄り添うスタイルで多くの相談者から支持を得ています。</p>
+          </div>
+        </div>
+
+        <div class="palmist-card">
+          <div class="palmist-image">
+            占い師画像
+          </div>
+          <div class="palmist-info">
+            <h3 class="palmist-name">蓮華 (Renge)</h3>
+            <p class="palmist-specialty">仕事・キャリア運 専門</p>
+            <p class="palmist-description">ビジネス経験を活かした実践的なアドバイスが好評。転職や起業の相談に強みを持っています。</p>
+          </div>
+        </div>
+
+        <div class="palmist-card">
+          <div class="palmist-image">
+            占い師画像
+          </div>
+          <div class="palmist-info">
+            <h3 class="palmist-name">星河 (Seiga)</h3>
+            <p class="palmist-specialty">総合運・人生相談 専門</p>
+            <p class="palmist-description">東洋と西洋の占術を融合させた独自のスタイル。人生の岐路に立つ方への導きを得意としています。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       CTA Section
+  ======================================== -->
+  <section class="cta-section">
+    <div class="cta-container">
+      <h2 class="cta-title">
+        あなたの手相が語る物語を、<br>
+        今すぐ紐解いてみませんか？
+      </h2>
+      <p class="cta-description">
+        初回のAI手相診断は完全無料。<br>
+        スマートフォンで手のひらを撮影するだけで、あなたの運命の一端が明らかになります。
+      </p>
+      <button class="cta-button">
+        無料でAI手相診断を始める
+        <span>▶</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ========================================
+       Footer
+  ======================================== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <svg class="logo-icon" width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 2C16 2 8 6 8 16C8 26 16 30 16 30C16 30 24 26 24 16C24 6 16 2 16 2Z" stroke="#c9a227" stroke-width="1.5" fill="none"/>
+              <path d="M16 8V24" stroke="#c9a227" stroke-width="1" opacity="0.6"/>
+              <circle cx="16" cy="16" r="2" fill="#c9a227" opacity="0.8"/>
+            </svg>
+            <span class="footer-logo-text">Palmistry Gate</span>
+          </div>
+          <p class="footer-tagline">
+            あなたの掌に刻まれた可能性を解き明かす。<br>
+            AI技術とプロ占い師の融合で、新しい手相占いの世界へ。
+          </p>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-column">
+            <h4>サービス</h4>
+            <ul>
+              <li><a href="#">AI手相診断</a></li>
+              <li><a href="#">プロ占い師に相談</a></li>
+              <li><a href="#">オンライン対面鑑定</a></li>
+              <li><a href="#">料金プラン</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4>サポート</h4>
+            <ul>
+              <li><a href="#">よくある質問</a></li>
+              <li><a href="#">使い方ガイド</a></li>
+              <li><a href="#">お問い合わせ</a></li>
+              <li><a href="#">占い師募集</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4>会社情報</h4>
+            <ul>
+              <li><a href="#">運営会社</a></li>
+              <li><a href="#">プライバシーポリシー</a></li>
+              <li><a href="#">利用規約</a></li>
+              <li><a href="#">特定商取引法に基づく表記</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">&copy; 2024 Palmistry Gate. All rights reserved.</p>
+        <div class="footer-social">
+          <a href="#" class="social-link" aria-label="Twitter">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+          <a href="#" class="social-link" aria-label="LINE">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================
+       JavaScript
+  ======================================== -->
+  <script>
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navMenu');
+
+    menuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+      menuToggle.classList.toggle('active');
+    });
+
+    // Header background on scroll
+    const header = document.querySelector('.header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.style.background = 'rgba(10, 26, 22, 0.98)';
+      } else {
+        header.style.background = 'rgba(10, 26, 22, 0.95)';
+      }
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
